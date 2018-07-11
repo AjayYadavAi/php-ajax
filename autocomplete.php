@@ -1,62 +1,55 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Space-O | Ajax submit form</title>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/3.0.3/bootstrap3-typeahead.min.js"></script>
+<style type="text/css">
+</style></style></script></script></script>
 </head>
 <body>
-<h1>jQuery post form data using .ajax() method</h1>
-<!-- our form -->
-<form id='userForm'>
-<div><input type='text' name='name' placeholder='Name' /></div>
-<div><input type='text' name='email' placeholder='Email' /></div>
-<div><input type='text' name='number' placeholder='Mobile Number' /></div>
-<div><input type='submit' value='Submit' /></div>
+<div class="container">
+<div class="row" style="background-color: #d6600e ;padding:30px;margin-top:20px;">
+<div class="col-md-4" style="margin-top:30px; background-color:#e8e7e5  ;padding:20px;border-radius:5px;">
+<form method="POST" action="insert.php">
+<div class="form-group">
+	<input type="text" class="form-control" name="name" placeholder='Add Country Name'><br>
+	<button class="btn btn-primary" type="submit">Add</button>
+</div>
 </form>
-<style type="text/css">
-table {
-border-collapse: collapse;
-}
-
-table, th, td {
-border: 1px solid black;
-}
-
-</style>
-<!-- where the response will be displayed -->
-<div id='response'></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
-<script>
-$(document).ready(function(){
-$('#userForm').submit(function(){
-
-// show that something is loading
-$('#response').html("<b>Loading response...</b>");
-
-// Call ajax for pass data to other place
-$.ajax({
-type: 'POST',
-url: 'get_information.php',
-data: $(this).serialize() // getting filed value in serialize form
-})
-.done(function(data){ // if getting done then call.
-
-// show the response
-$('#response').html(data);
-
-})
-.fail(function() { // if fail then getting message
-
-// just in case posting your form failed
-alert( "Posting failed." );
-
-});
-
-// to prevent refreshing the whole page page
-return false;
-
-});
-});
+</div>
+<div class="col-md-8"style="padding:20px;">
+	<h2 class="text-center" style="color:white;">Autocomplete input Box <br>Search and see the result</h2>
+	<label class="control-label col-sm-2">Search</label>
+	<div class="col-sm-8">
+		<input type="text" id="country" name="country" placeholder="Search Country Name " class="form-control" autocomplete="off">
+	</div>
+	<div class="col-sm-2"></div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#country").typeahead({
+			source:function(query, result){
+				$.ajax({
+					url:"fetch.php",
+					data:"query="+query,
+					dataType:"json",
+					type:"POST",
+					success:function(data){
+						result($.map(data, function(item){
+							return item;
+						}));
+					}
+				});
+			}
+		});
+	});
 </script>
-
 </body>
 </html>
